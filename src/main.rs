@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 
 mod generate;
 mod login;
@@ -15,7 +15,16 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     Login,
-    Generate,
+    Generate {
+        #[arg(long, value_enum, default_value_t = View::Image)]
+        view: View,
+    },
+}
+
+#[derive(Copy, Clone, ValueEnum)]
+enum View {
+    Image,
+    Browser,
 }
 
 fn main() {
@@ -23,7 +32,7 @@ fn main() {
 
     match &cli.command {
         Some(Commands::Login) => login::login(),
-        Some(Commands::Generate) => generate::generate(),
+        Some(Commands::Generate { view }) => generate::generate(*view),
         None => {
             print!("passportotp\n\ngenerate: generates a new code\nlogin: logs into id\n")
         }

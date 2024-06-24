@@ -1,8 +1,11 @@
 use totp_rs::{Algorithm, Secret, TOTP};
 
-use crate::util::display_qr_code::display_qr_code;
+use crate::{
+    util::display_qr_code::display_qr_code_browser, util::display_qr_code::display_qr_code_image,
+    View,
+};
 
-pub fn generate() {
+pub fn generate(view: View) {
     let secret = Secret::default().to_bytes().unwrap();
     let totp = TOTP::new(
         Algorithm::SHA1,
@@ -22,11 +25,12 @@ pub fn generate() {
         }
     };
 
-    // println!("{}", qr_code);
-    match display_qr_code(&qr_code) {
-        Ok(()) => {}
-        Err(e) => {
-            eprintln!("Failed to display QR code: {}", e);
-        }
-    }
+    let result = match view {
+        View::Image => display_qr_code_image(&qr_code),
+        View::Browser => display_qr_code_browser(&qr_code),
+    };
+
+    if let Err(e) = result {
+      eprintln!("Failed to display QR code: {}", e);
+  }
 }
