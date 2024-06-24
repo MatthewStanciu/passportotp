@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
-totp-rs = "5.5.1"
+totp-rs = { version = "5.5.1", features = ["gen_secret", "otpauth", "qr"] }
