@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 
 mod generate;
 mod login;
+mod util;
 
 #[derive(Parser)]
 #[command(name = "passportotp")]

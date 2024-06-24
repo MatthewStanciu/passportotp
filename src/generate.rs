@@ -1,5 +1,7 @@
 use totp_rs::{Algorithm, Secret, TOTP};
 
+use crate::util::display_qr_code::display_qr_code;
+
 pub fn generate() {
     let secret = Secret::default().to_bytes().unwrap();
     let totp = TOTP::new(
@@ -20,5 +22,11 @@ pub fn generate() {
         }
     };
 
-    println!("{}", qr_code);
+    // println!("{}", qr_code);
+    match display_qr_code(&qr_code) {
+        Ok(()) => {}
+        Err(e) => {
+            eprintln!("Failed to display QR code: {}", e);
+        }
+    }
 }
