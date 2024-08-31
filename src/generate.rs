@@ -6,7 +6,9 @@ use crate::{
 };
 
 pub fn generate(view: View) {
-    let secret = Secret::default().to_bytes().unwrap();
+    let secret = Secret::Encoded("some base32 string that matches the db".to_string())
+        .to_bytes()
+        .unwrap();
     let totp = TOTP::new(
         Algorithm::SHA1,
         6,
@@ -31,6 +33,6 @@ pub fn generate(view: View) {
     };
 
     if let Err(e) = result {
-      eprintln!("Failed to display QR code: {}", e);
-  }
+        eprintln!("Failed to display QR code: {}", e);
+    }
 }
